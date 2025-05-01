@@ -7,7 +7,7 @@ ext_ip=$(curl -s https://api.ipify.org)
 echo "External IP: $ext_ip"
 
 # Get the current WOPI allow list from Nextcloud
-current_wopi_list=$(docker exec ix-nextcloud bash -c "occ config:app:get richdocuments wopi_allowlist")
+current_wopi_list=$(docker exec ix-nextcloud-nextcloud-1 bash -c "occ config:app:get richdocuments wopi_allowlist")
 
 # Check if the external IP is blank (no internet connection)
 if [ "$ext_ip" = "" ]; then
@@ -22,7 +22,7 @@ else
     echo "Not up to date, updating IP: New IP = $ext_ip"
     
     # Use bash -c to ensure proper command execution
-    docker exec ix-nextcloud bash -c "occ config:app:set richdocuments wopi_allowlist --value=\"$ext_ip\""
+    docker exec ix-nextcloud-nextcloud-1 bash -c "occ config:app:set richdocuments wopi_allowlist --value=\"$ext_ip\""
     
     # Check if the IP was successfully set
     if [ $? -eq 0 ]; then
